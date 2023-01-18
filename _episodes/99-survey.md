@@ -1,6 +1,6 @@
 ---
 title: "Survey"
-slug: lesson-template-survey
+slug: r-novice-survey
 layout: page
 ---
 
