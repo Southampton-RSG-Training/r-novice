@@ -9,8 +9,8 @@ delivery: "static"
 type: "episode" # The other valid option is "episode_r"
 
 # Overall title for pages.
-title: "Lesson Title"
-form_title: "Lesson+Title" # This is required for the surveys
+title: "Introductory Data Management with R"
+form_title: "Introductory+Data+Management+with+R"
 
 # Email address, no mailto:
 email: "rsginfo@soton.ac.uk"
@@ -50,7 +50,7 @@ instructor-email:
 # rsg: Southampton Research Software Group
 carpentry: "rsg"
 # Change this to the canonical gh-name. This should only be updated if ALL the lesson slugs are also updated.
-gh-name: "lesson-template"
+gh-name: "r-novice"
 
 # Life cycle stage of the lesson
 # See this page for more details: https://cdh.carpentries.org/the-lesson-life-cycle.html
@@ -78,7 +78,7 @@ cc_by_human: "https://creativecommons.org/licenses/by/4.0/"
 
 # order is critical
 setup_docs:
-  - text_editor.md
+  - install_r.md
 
 # Specify that things in the episodes collection should be output.
 collections:
