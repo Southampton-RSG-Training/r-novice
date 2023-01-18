@@ -386,11 +386,7 @@ Page built on: 📆 2023-01-18 ‒ 🕢 09:26:39
 
 </p>
 
-# R Basics
-
------
-
-> ### Learning Objectives: Recap
+> ## Learning Objectives: Recap
 > 
 > #### Working Environment: Done
 > 
@@ -421,8 +417,11 @@ Page built on: 📆 2023-01-18 ‒ 🕢 09:26:39
 >   - Summarize the contents of a data frame.
 >   - Use indexing to subset specific portions of data frames.
 >   - Format dates.
+{: .callout}
 
 -----
+
+# R Basics
 
 Now that we have a working environment set up we can start on the basics
 of R.
@@ -569,13 +568,14 @@ comprehensive and may seem overwhelming at first. You can install the
 [**`lintr`**](https://github.com/jimhester/lintr) package to
 automatically check for issues in the styling of your code.
 
-> ### Objects vs. variables
+> ## Objects vs. variables
 > 
 > What are known as `objects` in `R` are known as `variables` in many
 > other programming languages. Depending on the context, `object` and
 > `variable` can have drastically different meanings. However, in this
 > lesson, the two words are used synonymously. For more information see:
 > <https://cran.r-project.org/doc/manuals/r-release/R-lang.html#Objects>
+{: .callout}
 
 When assigning a value to an object, R does not print anything. You can
 force R to print the value by using parentheses or by typing the object
@@ -1226,11 +1226,7 @@ we have been using in the other lessons, and learn about data frames.
 {: .challenge}
 
 
-# Load Data
-
------
-
-> ### Learning Objectives: Recap
+> ## Learning Objectives: Recap
 > 
 > #### Working Environment: Done
 > 
@@ -1262,8 +1258,11 @@ we have been using in the other lessons, and learn about data frames.
 >   - Summarize the contents of a data frame.
 >   - Use indexing to subset specific portions of data frames.
 >   - Format dates.
+{: .callout}
 
 -----
+
+# Load Data
 
 We have now learnt enough of the basics of R to be able to use R in
 place of spreadsheets. As the previous lessons will have shown you
@@ -1302,11 +1301,12 @@ In the R console type `?download.file` and then look at the help view
 that will open on the bottom right. We can see a description and a list
 of arguments. We need the first two, `url` and `destfile`.
 
->   - url: A character string giving a source URL for the data we use
->     “<https://ndownloader.figshare.com/files/2292169>”.
->   - destfile: A character string (or *vector*) denoting the
->     destination and name for the downloaded data we use
->     “data\_raw/portal\_data\_joined.csv”.
+- url: A character string giving a source URL for the data we use
+    “<https://ndownloader.figshare.com/files/2292169>”.
+- destfile: A character string (or *vector*) denoting the
+    destination and name for the downloaded data we use
+    “data\_raw/portal\_data\_joined.csv”.
+
 
 You’ll need the folder on your machine called “data\_raw” in your
 working envronment which we made earlier. So this command downloads a
@@ -1324,11 +1324,11 @@ use `?` and find the arguments of `?read.csv`. This time we just need
 the first argument `file` which we give the location of the file
 i.e. `destfile` from before.
 
-### Note
-
+> ## Note
 > It would be worth your time looking over all the arguments of
 > `read.csv` as reading in CSV files will likely be a useful skill
 > during your research.
+{: .callout}
 
 ``` r
 surveys <- read.csv("data_raw/portal_data_joined.csv")
@@ -1678,8 +1678,7 @@ head(missing_dates_tab)
 Why did these dates fail to parse? If you had to use these data for your
 analyses, how would you deal with this situation?
 
-### Note
-
+> ## Note
 > If the data is to be discarded we can use the `not` logical operator
 > `!` to make a filter for the bad dates.
 > 
@@ -1687,6 +1686,7 @@ analyses, how would you deal with this situation?
 > 
 > However for now we will include the bad dates and can us this simple
 > filter later if needed.
+{: .callout}
 
 The resulting `Date` vector `date_vec` can be added to `surveys` as a
 new column called `date`:
@@ -1712,8 +1712,8 @@ str(surveys) # notice the new column, with 'date' as the class
     >  $ plot_type      : chr  "Control" "Control" "Control" "Control" ...
     >  $ date           : Date, format: "1977-07-16" "1977-08-19" ...
 
-### Note
-
+> ## Note
+>
 > For completeness sake it is worth noting that the above could be
 > achieved in one line. `surveys$date <- ymd(paste(surveys$year,
 > surveys$month, surveys$day, sep = "-"))` However, we would again see
@@ -1721,10 +1721,11 @@ str(surveys) # notice the new column, with 'date' as the class
 > `head(surveys[is.na(surveys$date), , c("year", "month", "day")])` This
 > way the r environment is kept cleaner however it is more difficult to
 > unpick where errors have occured.
+{: .callout}
 
 -----
 
-> ### Learning Objectives: Recap
+> ## Learning Objectives: Recap
 > 
 > #### Working Environment: Done
 > 
@@ -1756,6 +1757,7 @@ str(surveys) # notice the new column, with 'date' as the class
 >   - ~~Summarize the contents of a data frame.~~
 >   - ~~Use indexing to subset specific portions of data frames.~~
 >   - ~~Format dates.~~
+{: .callout}
 
 -----
 
