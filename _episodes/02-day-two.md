@@ -321,7 +321,7 @@ frame.
 
 -----
 
-> ### Learning Objectives
+> ## Learning Objectives
 > 
 > #### Factors
 > 
@@ -351,6 +351,7 @@ frame.
 >   - Reshape a data frame from long to wide format and back with the
 >     `spread` and `gather` commands from the **`tidyr`** package.
 >   - Export a data frame to a .csv file.
+{: .callout}
 
 -----
 
@@ -416,8 +417,8 @@ period, an experimental unit like a plot or a batch number). Moving back
 and forth between these formats is non-trivial, and **`tidyr`** gives
 you tools for this and more sophisticated data manipulation.
 
-### Note
-
+> ## Note
+>
 > An additional feature of **`dplyr`** is the ability to work directly
 > with data stored in an external database. The benefits of doing this
 > are that the data can be managed natively in a relational database,
@@ -428,6 +429,7 @@ you tools for this and more sophisticated data manipulation.
 > essentially remove that limitation in that you can connect to a
 > database of many hundreds of GB, conduct queries on it directly, and
 > pull back into R only what you need for analysis.
+{: .callout}
 
 To learn more about **`dplyr`** and **`tidyr`** after the workshop, you
 may want to check out this [handy data transformation with **`dplyr`**
