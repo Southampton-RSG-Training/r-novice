@@ -1505,11 +1505,9 @@ correct names of the columns.
 {: .solution}
 
 > 
-> n\_rows \<- nrow(surveys)
+>
 > 
-> 2.  Notice how `nrow()` gave you the number of rows in a `data.frame`?
-> 
-> <!-- end list -->
+> 2.  Try running `n_rows <- nrow(surveys)`. Notice how `nrow()` gave you the number of rows in a `data.frame`?
 > 
 >   - Use that number to pull out just that last row in the data frame.
 >   - Compare that with what you see as the last row using `tail()` to
