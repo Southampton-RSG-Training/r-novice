@@ -1474,11 +1474,12 @@ correct names of the columns.
 > 
 > > ## Solution
 > > 
-> > surveys\_200 \<- surveys\[200, \] n\_rows \<- nrow(surveys)
+> > surveys\_200 \<- surveys\[200, \] 
 > > 
 > > 
 > {: .solution}
 > 
+> n\_rows \<- nrow(surveys)
 > 
 > 2.  Notice how `nrow()` gave you the number of rows in a `data.frame`?
 > 
