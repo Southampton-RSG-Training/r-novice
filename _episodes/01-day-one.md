@@ -1532,7 +1532,7 @@ correct names of the columns.
 > 
 > > ## Solution
 > > 
-> > survey\_dec\_2000 \<- surveys\[surveys\(month == 12 & surveys\)year
+> > survey\_dec\_2000 \<- surveys\[surveys$month == 12 & surveys$year
 > > == 2000, c(“record\_id”, “genus”, “species”)\]
 > > 
 > > 
