@@ -55,17 +55,10 @@ surveys <- read.csv("data_raw/portal_data_joined.csv")
 When we did `str(surveys)` we saw that several of the columns consist of
 integers.
 
-Please note the default behavior of R has changed recently with the
-release of 4.0.0
-\[<https://stat.ethz.ch/pipermail/r-announce/2020/000653.html>\].
-
-If using R version 3.\*.\*: The columns `genus`, `species`, `sex`,
-`plot_type`, … however, are of a special class called `factor`.
-
-If using R version 4.\*.\*: The columns `genus`, `species`, `sex`,
-`plot_type`, … are strings\! The behavior was changed so
-`stringsAsFactors = FALSE` is the default. So we are all working with
-the same data types please reload the data using the following:
+The columns `genus`, `species`, `sex`,
+`plot_type`, … are strings. This is because for the function `read.csv`
+`stringsAsFactors = FALSE` is the default. If we set `stringsAsFactors = TRUE`
+then these columns will be factors.
 
 ``` r
 surveys <- read.csv("data_raw/portal_data_joined.csv", stringsAsFactors = TRUE)
@@ -650,7 +643,7 @@ Note that the final data frame is the leftmost part of this expression.
 > > 
 > > surveys\_final \<- surveys %\>%
 > > 
-> > filter(year \< 1995, year \!= 2001, plot\_type == ‘Control’) %\>%
+> > filter(year \> 2000, year \!= 2001, plot\_type == ‘Control’) %\>%
 > > 
 > > select(record\_id, month, year, sex, weight)
 > > 
@@ -717,7 +710,7 @@ weight *is not* an `NA`.
 > following criteria: contains only the `species_id` column and a new
 > column called `hindfoot_cm` containing the `hindfoot_length` values
 > converted to centimeters. In this `hindfoot_cm` column, there are no
-> `NA`s and all values are less than 3.
+> `NA`s and all values are less than 3. Assume `hindfoot_length` is currently in mm.
 > 
 > **Hint**: think about how the commands should be ordered to produce
 > this data frame\!
