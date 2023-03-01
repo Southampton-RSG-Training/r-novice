@@ -921,7 +921,7 @@ sex (i.e. `NA`).
 
 > ## Challenge
 > 
-> 1.  How many animals were caught in each `plot_type` surveyed?
+> - How many animals were caught in each `plot_type` surveyed?
 > 
 > > ## Solution
 > > 
@@ -933,7 +933,7 @@ sex (i.e. `NA`).
 > {: .solution}
 > 
 > 
-> 2.  Use `group_by()` and `summarize()` to find the mean, min, and max
+> - Use `group_by()` and `summarize()` to find the mean, min, and max
 >     hindfoot length for each species (using `species_id`). Also add
 >     the number of observations (hint: see `?n`).
 > 
@@ -959,7 +959,7 @@ sex (i.e. `NA`).
 > {: .solution}
 > 
 > 
-> 3.  What was the heaviest animal measured in each year? Return the
+> - What was the heaviest animal measured in each year? Return the
 >     columns `year`, `genus`, `species_id`, and `weight`.
 > 
 > > ## Solution
@@ -1129,7 +1129,7 @@ surveys_wide %>%
 
 > ## Challenge
 > 
-> 1.  Use `pivot_wider()` on the `surveys` data frame with `year` as
+> - Use `pivot_wider()` on the `surveys` data frame with `year` as
 >     columns, `plot_id` as rows, and the number of genera per plot as
 >     the values. You will need to summarize before reshaping, and use
 >     the function `n_distinct()` to get the number of unique genera
@@ -1152,7 +1152,7 @@ surveys_wide %>%
 > {: .solution}
 > 
 > 
-> 2.  Now take that data frame and `pivot_longer()` it again, so each
+> - Now take that data frame and `pivot_longer()` it again, so each
 >     row is a unique `plot_id` by `year` combination.
 > 
 > > ## Solution
@@ -1166,7 +1166,7 @@ surveys_wide %>%
 > {: .solution}
 > 
 > 
-> 3.  The `surveys` data set has two measurement columns:
+> - The `surveys` data set has two measurement columns:
 >     `hindfoot_length` and `weight`. This makes it difficult to do
 >     things like look at the relationship between mean values of each
 >     measurement per year in different plot types. Let’s walk through a
@@ -1187,7 +1187,7 @@ surveys_wide %>%
 > {: .solution}
 > 
 > 
-> 4.  With this new data set, calculate the average of each
+> - With this new data set, calculate the average of each
 >     `measurement` in each `year` for each different `plot_type`. Then
 >     `pivot_wider()` them into a data set with a column for
 >     `hindfoot_length` and `weight`. *Hint*: You only need to specify
