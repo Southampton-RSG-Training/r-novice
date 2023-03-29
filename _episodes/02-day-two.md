@@ -437,7 +437,7 @@ cheatsheet](https://dplyr.tidyverse.org/) and this [one about
 > 
 > If you have more packages loaded, filter and select from dplyr can be
 > overwritten by functions of the same name in different packages. Use
-> `dplyr::select` or `prioritize()` from the package `man` to ensure
+> `dplyr::select` or `prioritize()` from the package `needs` to ensure
 > you’re using the correct version of the function. 
 {: .challenge}
 
