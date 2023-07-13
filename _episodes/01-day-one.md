@@ -458,10 +458,6 @@ You can get output from R simply by typing math in the console:
 > > ```r
 > > 8 %% 3
 > > ```
-> > ~~~
-> > \[1\] 2
-> > ~~~
-> > {: .output}
 > > 
 > {: .solution}
 > 
@@ -470,10 +466,9 @@ You can get output from R simply by typing math in the console:
 > 
 > > ## Solution
 > > 
+> > ```r
 > > 5 ^ 2
-> > 
-> > > \[1\] 25
-> > 
+> > ```
 > > 
 > {: .solution}
 >  
@@ -930,9 +925,9 @@ important ones are lists (`list`), matrices (`matrix`), data frames
 > 
 > > ## Solution
 > > 
+> > ```r
 > > rep(1:5, 3)
-> > 
-> > > \[1\] 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5
+> > ```
 > > 
 > > 
 > {: .solution}
@@ -940,10 +935,9 @@ important ones are lists (`list`), matrices (`matrix`), data frames
 > 
 > > ## Solution
 > > 
+> > ```r
 > > seq(3, 30, 3)
-> > 
-> > > \[1\] 3 6 9 12 15 18 21 24 27 30
-> > 
+> > ```
 > > 
 > {: .solution}
 > 
@@ -1074,12 +1068,10 @@ animals[animals %in% c("rat", "cat", "dog", "duck", "goat")]
 > 
 > > ## Solution
 > > 
-> > creatures\[\!(creatures %in% mammals & creatures %in%
-> > sea\_creatures)\]
-> > 
-> > > \[1\] “rat” “sheep” “squirrel” “tiger” “jellyfish” “octopus”  
-> > > \[7\] “shark”
-> > 
+> > ```r
+> > creatures[!(creatures %in% mammals & creatures %in%
+> > sea_creatures)]
+> > ```
 > > 
 > {: .solution}
 > 
@@ -1144,52 +1136,18 @@ atomic vector.
 > 
 > > ## Solution
 > > 
-> > heights \<- c(63, 69, 60, 65, NA, 68, 61, 70, 61, 59, 64, 69, 63,
+> > ```r
+> > heights <- c(63, 69, 60, 65, NA, 68, 61, 70, 61, 59, 64, 69, 63,
 > > 63, NA, 72, 65, 64, 70, 63, 65)
 > > 
-> > heights
-> > 
-> > > \[1\] 63 69 60 65 NA 68 61 70 61 59 64 69 63 63 NA 72 65 64 70 63
-> > > 65
-> > 
-> > ### 1\.
-> > 
-> > heights\_no\_na \<- heights\[\!is.na(heights)\]
-> > 
-> > heights\_no\_na
-> > 
-> > > \[1\] 63 69 60 65 68 61 70 61 59 64 69 63 63 72 65 64 70 63 65
-> > 
-> > #### or
-> > 
-> > heights\_no\_na \<- na.omit(heights)
-> > 
-> > heights\_no\_na
-> > 
-> > > \[1\] 63 69 60 65 68 61 70 61 59 64 69 63 63 72 65 64 70 63 65
-> > > attr(,“na.action”) \[1\] 5 15 attr(,“class”) \[1\] “omit”
-> > 
-> > #### or
-> > 
-> > heights\_no\_na \<- heights\[complete.cases(heights)\]
-> > 
-> > heights\_no\_na
-> > 
-> > > \[1\] 63 69 60 65 68 61 70 61 59 64 69 63 63 72 65 64 70 63 65
-> > 
-> > ### 2\.
+> > heights_no_na <- heights[!is.na(heights)]
 > > 
 > > median(heights, na.rm = TRUE)
 > > 
-> > > \[1\] 64
+> > heights_above_67 <- heights_no_na[heights_no_na > 67]
 > > 
-> > ### 3\.
-> > 
-> > heights\_above\_67 \<- heights\_no\_na\[heights\_no\_na \> 67\]
-> > 
-> > length(heights\_above\_67)
-> > 
-> > > \[1\] 6
+> > length(heights_above_67)
+> > ```
 > > 
 > > 
 > {: .solution}
@@ -1480,7 +1438,9 @@ correct names of the columns.
 > 
 > > ## Solution
 > > 
-> > surveys\_200 \<- surveys\[200, \] 
+> > ```r
+> > surveys_200 <- surveys[200, ] 
+> > ```
 > > 
 > > 
 > {: .solution}
@@ -1497,8 +1457,9 @@ correct names of the columns.
 > 
 > > ## Solution
 > > 
-> > surveys\_last \<- surveys\[n\_rows, \]
-> > 
+> > ```r
+> > surveys_last <- surveys[n_rows, ]
+> > ```
 > > 
 > {: .solution}
 > 
@@ -1509,8 +1470,9 @@ correct names of the columns.
 > 
 > > ## Solution
 > > 
-> > surveys\_middle \<- surveys\[n\_rows / 2, \]
-> > 
+> > ```r
+> > surveys_middle <- surveys[n_rows / 2, ]
+> > ```
 > > 
 > {: .solution}
 > 
@@ -1521,8 +1483,9 @@ correct names of the columns.
 > 
 > > ## Solution
 > > 
-> > surveys\_head \<- surveys\[-(7:n\_rows), \]
-> > 
+> > ```r
+> > surveys_head <- surveys[-(7:n_rows), ]
+> > ```
 > > 
 > {: .solution}
 >  
@@ -1536,9 +1499,10 @@ correct names of the columns.
 > 
 > > ## Solution
 > > 
-> > survey\_dec\_2000 \<- surveys\[surveys$month == 12 & surveys$year
-> > == 2000, c(“record\_id”, “genus”, “species”)\]
-> > 
+> > ```r
+> > survey_dec_2000 <- surveys[surveys$month == 12 & surveys$year
+> > == 2000, c('record_id', 'genus', 'species')]
+> > ```
 > > 
 > {: .solution}
 > 
@@ -1704,58 +1668,15 @@ head(sex)
 > 
 > > ## Solution
 > > 
-> > levels(sex)\[2:3\] \<- c(“female”, “male”)
+> > ```r
+> > levels(sex)[2:3] <- c('female', 'male')
 > > 
-> > sex \<- factor(sex, levels = c(“female”, “male”, “undetermined”))
+> > sex <- factor(sex, levels = c('female', 'male', 'undetermined'))
 > > 
 > > plot(sex)
+> > ```
 > > 
 > > ![](fig/unnamed-chunk-11-1.png)<!-- --> 
-> {: .solution}
-> 
-> 
-> 
-{: .challenge}
-
-
-> ## Stretch Challenge (Intermediate - 20 mins)
-> 
->   - Group data from the continuous variable `hindfoot_length` into
->     chunks of 10 units and convert this variable into a factor.
->     i.e. you should have factor levels ‘0-10’, ‘11-20’, ‘21-30’,
->     ‘31-40’, ‘41-50’, ‘51-60’, and ‘60+’.
-> 
->   - Create a barplot of `hindfoot_length`
-> 
-> > ## Solution
-> > 
-> > surveys\[,‘hindfoot\_length’\]\[surveys\[,‘hindfoot\_length’\] \<=
-> > 10\] \<- “0-10”
-> > 
-> > surveys\[,‘hindfoot\_length’\]\[surveys\[,‘hindfoot\_length’\] \> 10
-> > & surveys\[,‘hindfoot\_length’\] \<= 20\] \<- “11-20”
-> > 
-> > surveys\[,‘hindfoot\_length’\]\[surveys\[,‘hindfoot\_length’\] \> 20
-> > & surveys\[,‘hindfoot\_length’\] \<= 30\] \<- “21-30”
-> > 
-> > surveys\[,‘hindfoot\_length’\]\[surveys\[,‘hindfoot\_length’\] \> 30
-> > & surveys\[,‘hindfoot\_length’\] \<= 40\] \<- “31-40”
-> > 
-> > surveys\[,‘hindfoot\_length’\]\[surveys\[,‘hindfoot\_length’\] \> 40
-> > & surveys\[,‘hindfoot\_length’\] \<= 50\] \<- “41-50”
-> > 
-> > surveys\[,‘hindfoot\_length’\]\[surveys\[,‘hindfoot\_length’\] \> 50
-> > & surveys\[,‘hindfoot\_length’\] \<= 60\] \<- “51-60”
-> > 
-> > surveys\[,‘hindfoot\_length’\]\[surveys\[,‘hindfoot\_length’\] \>
-> > 60\] \<- “61+”
-> > 
-> > surveys\[,‘hindfoot\_length’\] \<-
-> > as.factor(surveys\[,‘hindfoot\_length’\])
-> > 
-> > plot(surveys\[,‘hindfoot\_length’\])
-> > 
-> > ![](fig/unnamed-chunk-12-1.png)<!-- --> 
 > {: .solution}
 > 
 > 
