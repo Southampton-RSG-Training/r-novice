@@ -436,14 +436,18 @@ You can get output from R simply by typing math in the console:
 ``` r
 3 + 5
 ```
-
-    > [1] 8
+~~~
+[1] 8
+~~~
+{: .output}
 
 ``` r
 12 / 7
 ```
-
-    > [1] 1.714286
+~~~
+[1] 1.714286
+~~~
+{: .output}
 
 > ## Stretch Challenge (Intermediate - 15 mins)
 > 
@@ -1069,8 +1073,7 @@ animals[animals %in% c("rat", "cat", "dog", "duck", "goat")]
 > > ## Solution
 > > 
 > > ```r
-> > creatures[!(creatures %in% mammals & creatures %in%
-> > sea_creatures)]
+> > creatures[!(creatures %in% mammals & creatures %in% sea_creatures)]
 > > ```
 > > 
 > {: .solution}
@@ -1137,8 +1140,7 @@ atomic vector.
 > > ## Solution
 > > 
 > > ```r
-> > heights <- c(63, 69, 60, 65, NA, 68, 61, 70, 61, 59, 64, 69, 63,
-> > 63, NA, 72, 65, 64, 70, 63, 65)
+> > heights <- c(63, 69, 60, 65, NA, 68, 61, 70, 61, 59, 64, 69, 63, 63, NA, 72, 65, 64, 70, 63, 65)
 > > 
 > > heights_no_na <- heights[!is.na(heights)]
 > > 
@@ -1500,8 +1502,7 @@ correct names of the columns.
 > > ## Solution
 > > 
 > > ```r
-> > survey_dec_2000 <- surveys[surveys$month == 12 & surveys$year
-> > == 2000, c('record_id', 'genus', 'species')]
+> > survey_dec_2000 <- surveys[surveys$month == 12 & surveys$year == 2000, c('record_id', 'genus', 'species')]
 > > ```
 > > 
 > {: .solution}
