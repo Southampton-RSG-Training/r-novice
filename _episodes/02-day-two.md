@@ -14,7 +14,7 @@ objectives:
 - "Describe the concept of a wide and a long table format and for which purpose those formats are useful."
 - "Describe what key-value pairs are."
 - "Format dates."
-- "Reshape a data frame from long to wide format and back with the `spread` and `gather` commands from the **`tidyr`** package."
+- "Reshape a data frame from long to wide format and back with the `pivot_wider` and `pivot_longer` commands from the **`tidyr`** package."
 - "Export a data frame to a .csv file."
 keypoints:
 - "Factors represent categorical data. They are stored as integers associated
@@ -203,7 +203,7 @@ We’re going to learn some of the most common **`dplyr`** functions:
   - `arrange()`: sort results
   - `count()`: count discrete values
 
-> ## Challenge:
+> ## Challenge
 > 
 > Before we use the functions… Thinking about the survey dataset, or
 > another dataset you are familiar with can you think of a use case for
@@ -344,8 +344,8 @@ Note that the final data frame is the leftmost part of this expression.
 > > 
 > > ```r
 > > surveys_final <- surveys %>%
-> > filter(year > 2000, year != 2001, plot_type == 'Control') %>%
-> > select(record_id, month, year, sex, weight)
+> >   filter(year > 2000, year != 2001, plot_type == 'Control') %>%
+> >   select(record_id, month, year, sex, weight)
 > > ```
 > > 
 > {: .solution}
@@ -441,8 +441,8 @@ weight *is not* an `NA`.
 > > 
 > > ```r
 > > surveys_simplified <- surveys %>%
-> > mutate(weight_simplified =
-> >   ifelse(weight <= mean(weight, na.rm = TRUE), 1, 2))
+> >   mutate(weight_simplified =
+> >     ifelse(weight <= mean(weight, na.rm = TRUE), 1, 2))
 > > ```
 > > 
 > {: .solution}
@@ -643,8 +643,8 @@ sex (i.e. `NA`).
 > > 
 > > ```r
 > > surveys %>%
-> >   filter(!is.na(hindfoot_length)) %\>%
-> >   group_by(species_id) %\>%
+> >   filter(!is.na(hindfoot_length)) %>%
+> >   group_by(species_id) %>%
 > >   summarize(
 > >     mean_hindfoot_length = mean(hindfoot_length),
 > >     min_hindfoot_length = min(hindfoot_length),

@@ -827,14 +827,18 @@ complex objects:
 ``` r
 str(weight_g)
 ```
-
-    >  num [1:4] 50 60 65 82
+~~~
+num [1:4] 50 60 65 82
+~~~
+{: .output}
 
 ``` r
 str(animals)
 ```
-
-    >  chr [1:3] "mouse" "rat" "dog"
+~~~
+chr [1:3] "mouse" "rat" "dog"
+~~~
+{: .output}
 
 You can use the `c()` function to add other elements to your vector:
 
