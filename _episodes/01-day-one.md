@@ -593,8 +593,10 @@ pounds is 2.2 times the weight in kg):
 ``` r
 2.2 * weight_kg
 ```
-
-    > [1] 121
+~~~
+[1] 121
+~~~
+{: .output}
 
 We can also change an object’s value by assigning it a new one:
 
@@ -602,8 +604,10 @@ We can also change an object’s value by assigning it a new one:
 weight_kg <- 57.5
 2.2 * weight_kg
 ```
-
-    > [1] 126.5
+~~~
+[1] 126.5
+~~~
+{: .output}
 
 This means that assigning a value to one object does not change the
 values of other objects. For example, let’s store the animal’s weight in
@@ -686,8 +690,10 @@ Let’s try a function that can take multiple arguments: `round()`.
 ``` r
 round(3.14159)
 ```
-
-    > [1] 3
+~~~
+[1] 3
+~~~
+{: .output}
 
 Here, we’ve called `round()` with just one argument, `3.14159`, and it
 has returned the value `3`. That’s because the default is to round to
@@ -699,9 +705,11 @@ this function using `?round`.
 ``` r
 args(round)
 ```
-
-    > function (x, digits = 0) 
-    > NULL
+~~~
+function (x, digits = 0) 
+NULL
+~~~
+{: .output}
 
 ``` r
 ?round
@@ -713,8 +721,10 @@ We see that if we want a different number of digits, we can type `digits
 ``` r
 round(3.14159, digits = 2)
 ```
-
-    > [1] 3.14
+~~~
+[1] 3.14
+~~~
+{: .output}
 
 > ## Stretch Challenge (Intermediate - 10 mins)
 > 
@@ -751,8 +761,10 @@ assign it to a new object `weight_g`:
 weight_g <- c(50, 60, 65, 82)
 weight_g
 ```
-
-    > [1] 50 60 65 82
+~~~
+[1] 50 60 65 82
+~~~
+{: .output}
 
 A vector can also contain characters:
 
@@ -760,8 +772,10 @@ A vector can also contain characters:
 animals <- c("mouse", "rat", "dog")
 animals
 ```
-
-    > [1] "mouse" "rat"   "dog"
+~~~
+[1] "mouse" "rat"   "dog"
+~~~
+{: .output}
 
 The quotes around “mouse”, “rat”, etc. are essential here to tell R that
 these are characters and not objects.
@@ -773,14 +787,18 @@ vector:
 ``` r
 length(weight_g)
 ```
-
-    > [1] 4
+~~~
+[1] 4
+~~~
+{: .output}
 
 ``` r
 length(animals)
 ```
-
-    > [1] 3
+~~~
+[1] 3
+~~~
+{: .output}
 
 An important feature of a vector, is that all of the elements are the
 same type of data. The function `class()` indicates what kind of object
@@ -789,14 +807,18 @@ you are working with:
 ``` r
 class(weight_g)
 ```
-
-    > [1] "numeric"
+~~~
+[1] "numeric"
+~~~
+{: .output}
 
 ``` r
 class(animals)
 ```
-
-    > [1] "character"
+~~~
+[1] "character"
+~~~
+{: .output}
 
 The function `str()` provides an overview of the structure of an object
 and its elements. It is a useful function when working with large and
@@ -821,8 +843,10 @@ weight_g <- c(weight_g, 90) # add to the end of the vector
 weight_g <- c(30, weight_g) # add to the beginning of the vector
 weight_g
 ```
-
-    > [1] 30 50 60 65 82 90
+~~~
+[1] 30 50 60 65 82 90
+~~~
+{: .output}
 
 In the first line, we take the original vector `weight_g`, add the value
 `90` to the end of it, and save the result back into `weight_g`. Then we
@@ -959,14 +983,18 @@ provide one or several indices in square brackets. For instance:
 animals <- c("mouse", "rat", "dog", "cat")
 animals[2]
 ```
-
-    > [1] "rat"
+~~~
+[1] "rat"
+~~~
+{: .output}
 
 ``` r
 animals[c(3, 2)]
 ```
-
-    > [1] "dog" "rat"
+~~~
+[1] "dog" "rat"
+~~~
+{: .output}
 
 We can also repeat the indices to create an object with more elements
 than the original one:
@@ -975,8 +1003,10 @@ than the original one:
 more_animals <- animals[c(1, 2, 3, 2, 1, 4)]
 more_animals
 ```
-
-    > [1] "mouse" "rat"   "dog"   "rat"   "mouse" "cat"
+~~~
+[1] "mouse" "rat"   "dog"   "rat"   "mouse" "cat"
+~~~
+{: .output}
 
 ### Conditional subsetting
 
@@ -987,8 +1017,10 @@ will select the element with the same index, while `FALSE` will not:
 weight_g <- c(21, 34, 39, 54, 55)
 weight_g[c(TRUE, FALSE, FALSE, TRUE, TRUE)]
 ```
-
-    > [1] 21 54 55
+~~~
+[1] 21 54 55
+~~~
+{: .output}
 
 Typically, these logical vectors are not typed by hand, but are the
 output of other functions or logical tests. For instance, if you wanted
@@ -997,15 +1029,19 @@ to select only the values above 50:
 ``` r
 weight_g > 50    # will return logicals with TRUE for the indices that meet the condition
 ```
-
-    > [1] FALSE FALSE FALSE  TRUE  TRUE
+~~~
+[1] FALSE FALSE FALSE  TRUE  TRUE
+~~~
+{: .output}
 
 ``` r
 ## so we can use this to select only the values above 50
 weight_g[weight_g > 50]
 ```
-
-    > [1] 54 55
+~~~
+[1] 54 55
+~~~
+{: .output}
 
 You can combine multiple tests using `&` (both conditions are true, AND)
 or `|` (at least one of the conditions is true, OR):
@@ -1013,20 +1049,26 @@ or `|` (at least one of the conditions is true, OR):
 ``` r
 weight_g[weight_g > 30 & weight_g < 50]
 ```
-
-    > [1] 34 39
+~~~
+[1] 34 39
+~~~
+{: .output}
 
 ``` r
 weight_g[weight_g <= 30 | weight_g == 55]
 ```
-
-    > [1] 21 55
+~~~
+[1] 21 55
+~~~
+{: .output}
 
 ``` r
 weight_g[weight_g >= 30 & weight_g == 21]
 ```
-
-    > numeric(0)
+~~~
+numeric(0)
+~~~
+{: .output}
 
 Here, `>` for “greater than”, `<` stands for “less than”, `<=` for “less
 than or equal to”, and `==` for “equal to”. The double equal sign `==`
@@ -1043,20 +1085,26 @@ if any of the elements of a search vector are found:
 animals <- c("mouse", "rat", "dog", "cat")
 animals[animals == "cat" | animals == "rat"] # returns both rat and cat
 ```
-
-    > [1] "rat" "cat"
+~~~
+[1] "rat" "cat"
+~~~
+{: .output}
 
 ``` r
 animals %in% c("rat", "cat", "dog", "duck", "goat")
 ```
-
-    > [1] FALSE  TRUE  TRUE  TRUE
+~~~
+[1] FALSE  TRUE  TRUE  TRUE
+~~~
+{: .output}
 
 ``` r
 animals[animals %in% c("rat", "cat", "dog", "duck", "goat")]
 ```
-
-    > [1] "rat" "dog" "cat"
+~~~
+[1] "rat" "dog" "cat"
+~~~
+{: .output}
 
 > ## Stretch Challenge (Difficult - 10 mins)
 > 
@@ -1551,17 +1599,21 @@ the `sex` vector would be:
 ``` r
 sex # current order
 ```
-
-    > [1] male   female female male  
-    > Levels: female male
+~~~
+[1] male   female female male  
+Levels: female male
+~~~
+{: .output}
 
 ``` r
 sex <- factor(sex, levels = c("male", "female"))
 sex # after re-ordering
 ```
-
-    > [1] male   female female male  
-    > Levels: male female
+~~~
+[1] male   female female male  
+Levels: male female
+~~~
+{: .output}
 
 In R’s memory, these factors are represented by integers (1, 2, 3), but
 are more informative than integers because factors are self describing:
@@ -1635,30 +1687,38 @@ data frame:
 sex <- factor(surveys$sex)
 head(sex)
 ```
-
-    > [1] M M        
-    > Levels:  F M
+~~~
+[1] M M        
+Levels:  F M
+~~~
+{: .output}
 
 ``` r
 levels(sex)
 ```
-
-    > [1] ""  "F" "M"
+~~~
+[1] ""  "F" "M"
+~~~
+{: .output}
 
 ``` r
 levels(sex)[1] <- "undetermined"
 levels(sex)
 ```
-
-    > [1] "undetermined" "F"            "M"
+~~~
+[1] "undetermined" "F"            "M"
+~~~
+{: .output}
 
 ``` r
 head(sex)
 ```
-
-    > [1] M            M            undetermined undetermined undetermined
-    > [6] undetermined
-    > Levels: undetermined F M
+~~~
+[1] M            M            undetermined undetermined undetermined
+[6] undetermined
+Levels: undetermined F M
+~~~
+{: .output}
 
 > ## Challenge
 > 

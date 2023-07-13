@@ -67,19 +67,13 @@ pivot_longer() from the tidyr package."
 >   - Describe what key-value pairs are.
 >   - Format dates.
 >   - Reshape a data frame from long to wide format and back with the
->     `spread` and `gather` commands from the **`tidyr`** package.
+>     `pivot_wider` and `pivot_longer` commands from the **`tidyr`** package.
 >   - Export a data frame to a .csv file.
 {: .callout}
 
 -----
 
 # Data Manipulation using **`dplyr`** and **`tidyr`**
-
-Bracket subsetting is handy, but it can be cumbersome and difficult to
-read, especially for complicated operations. **`dplyr`** is a package
-for making tabular data manipulation easier. It pairs nicely with
-**`tidyr`** which enables you to swiftly convert between different data
-formats for plotting and analysis.
 
 Packages in R are basically sets of additional functions that let you do
 more stuff. The functions we’ve been using so far, like `str()` or
@@ -101,14 +95,6 @@ when doing data analysis with some of the functions that come with R:
 3.  Hidden arguments, having default operations that new learners are
     not aware of.
 
-We have seen above that when building or importing a data frame, the
-columns that contain characters (i.e., text) are coerced (=converted)
-into the `factor` data type. We had to set **`stringsAsFactors`** to
-**`FALSE`** to avoid this hidden argument to convert our data type.
-
-This time we will use the **`tidyverse`** package to read the data and
-avoid having to set **`stringsAsFactors`** to **`FALSE`**
-
 If we haven’t already done so, we can type
 `install.packages("tidyverse")` straight into the console. In fact, it’s
 better to write this in the console than in our script for any package,
@@ -120,6 +106,42 @@ Then, to load the package type:
 ## load the tidyverse packages, incl. dplyr
 library(tidyverse)
 ```
+### Getting started with Tidyverse
+
+We’ll read in our data using the `read_csv()` function, from the
+tidyverse package **`readr`**, instead of `read.csv()`.
+
+``` r
+surveys <- read_csv("data_raw/portal_data_joined.csv")
+```
+
+You will see the message `Parsed with column specification`, followed by
+each column name and its data type. When you execute `read_csv` on a
+data file, it looks through the first 1000 rows of each column and
+guesses the data type for each column as it reads it into R. For
+example, in this dataset, `read_csv` reads `weight` as `col_double` (a
+numeric data type), and `species` as `col_character`. You have the
+option to specify the data type for a column manually by using the
+`col_types` argument in `read_csv`.
+
+``` r
+## inspect the data
+str(surveys)
+```
+
+``` r
+## preview the data
+View(surveys)
+```
+
+Notice that the class of the data is now `tbl_df`
+
+This is referred to as a “tibble”. Tibbles tweak some of the behaviors
+of the data frame objects we introduced in the previous lesson. The data
+structure is very similar to a data frame. For our purposes the only
+difference is that, in addition to displaying the data type of each column under its
+name, it only prints the first few rows of data and only as many
+columns as fit on one screen.
 
 ## What are **`dplyr`** and **`tidyr`**?
 
@@ -167,45 +189,6 @@ cheatsheet](https://dplyr.tidyverse.org/) and this [one about
 {: .challenge}
 
 
-### Getting started with Tidyverse
-
-We’ll read in our data using the `read_csv()` function, from the
-tidyverse package **`readr`**, instead of `read.csv()`.
-
-``` r
-surveys <- read_csv("data_raw/portal_data_joined.csv")
-```
-
-You will see the message `Parsed with column specification`, followed by
-each column name and its data type. When you execute `read_csv` on a
-data file, it looks through the first 1000 rows of each column and
-guesses the data type for each column as it reads it into R. For
-example, in this dataset, `read_csv` reads `weight` as `col_double` (a
-numeric data type), and `species` as `col_character`. You have the
-option to specify the data type for a column manually by using the
-`col_types` argument in `read_csv`.
-
-``` r
-## inspect the data
-str(surveys)
-```
-
-``` r
-## preview the data
-View(surveys)
-```
-
-Notice that the class of the data is now `tbl_df`
-
-This is referred to as a “tibble”. Tibbles tweak some of the behaviors
-of the data frame objects we introduced in the previous lesson. The data
-structure is very similar to a data frame. For our purposes the only
-differences are that:
-
-1.  In addition to displaying the data type of each column under its
-    name, it only prints the first few rows of data and only as many
-    columns as fit on one screen.
-2.  Columns of class `character` are never converted into factors.
 
 ## Managing Data with dplyr
 
@@ -331,12 +314,11 @@ Note that the final data frame is the leftmost part of this expression.
 > 
 > > ## Solution
 > > 
-> > surveys %\>%
-> > 
-> > filter(year \< 1995) %\>%
-> > 
-> > select(year, sex, weight)
-> > 
+> > ```r
+> > surveys %>%
+> >   filter(year < 1995) %>%
+> >   select(year, sex, weight)
+> > ```
 > > 
 > {: .solution}
 > 
@@ -360,12 +342,11 @@ Note that the final data frame is the leftmost part of this expression.
 > 
 > > ## Solution
 > > 
-> > surveys\_final \<- surveys %\>%
-> > 
-> > filter(year \> 2000, year \!= 2001, plot\_type == ‘Control’) %\>%
-> > 
-> > select(record\_id, month, year, sex, weight)
-> > 
+> > ```r
+> > surveys_final <- surveys %>%
+> > filter(year > 2000, year != 2001, plot_type == 'Control') %>%
+> > select(record_id, month, year, sex, weight)
+> > ```
 > > 
 > {: .solution}
 > 
@@ -434,16 +415,13 @@ weight *is not* an `NA`.
 > 
 > > ## Solution
 > > 
-> > surveys\_hindfoot\_cm \<- surveys %\>%
-> > 
-> > filter(\!is.na(hindfoot\_length)) %\>%
-> > 
-> > mutate(hindfoot\_cm = hindfoot\_length / 10) %\>%
-> > 
-> > filter(hindfoot\_cm \< 3) %\>%
-> > 
-> > select(species\_id, hindfoot\_cm)
-> > 
+> > ```r
+> > surveys_hindfoot_cm <- surveys %>%
+> >   filter(!is.na(hindfoot_length)) %>%
+> >   mutate(hindfoot_cm = hindfoot_length / 10) %>%
+> >   filter(hindfoot_cm < 3) %>%
+> >   select(species_id, hindfoot_cm)
+> > ```
 > > 
 > {: .solution}
 > 
@@ -461,12 +439,11 @@ weight *is not* an `NA`.
 > 
 > > ## Solution
 > > 
-> > surveys\_simplified \<- surveys %\>%
-> > 
-> > mutate(weight\_simplified =
-> > 
-> > ifelse(weight \<= mean(weight, na.rm = TRUE), 1, 2))
-> > 
+> > ```r
+> > surveys_simplified <- surveys %>%
+> > mutate(weight_simplified =
+> >   ifelse(weight <= mean(weight, na.rm = TRUE), 1, 2))
+> > ```
 > > 
 > {: .solution}
 > 
@@ -650,10 +627,10 @@ sex (i.e. `NA`).
 > 
 > > ## Solution
 > > 
-> > surveys %\>%
-> > 
-> > count(plot\_type)
-> > 
+> > ```r
+> > surveys %>%
+> >   count(plot_type)
+> > ```
 > > 
 > {: .solution}
 > 
@@ -664,22 +641,16 @@ sex (i.e. `NA`).
 > 
 > > ## Solution
 > > 
-> > surveys %\>%
-> > 
-> > filter(\!is.na(hindfoot\_length)) %\>%
-> > 
-> > group\_by(species\_id) %\>%
-> > 
-> > summarize(
-> > 
-> > mean\_hindfoot\_length = mean(hindfoot\_length),
-> > 
-> > min\_hindfoot\_length = min(hindfoot\_length),
-> > 
-> > max\_hindfoot\_length = max(hindfoot\_length),
-> > 
-> > n = n() )
-> > 
+> > ```r
+> > surveys %>%
+> >   filter(!is.na(hindfoot_length)) %\>%
+> >   group_by(species_id) %\>%
+> >   summarize(
+> >     mean_hindfoot_length = mean(hindfoot_length),
+> >     min_hindfoot_length = min(hindfoot_length),
+> >     max_hindfoot_length = max(hindfoot_length),
+> >     n = n() )
+> > ```
 > > 
 > {: .solution}
 > 
@@ -689,18 +660,14 @@ sex (i.e. `NA`).
 > 
 > > ## Solution
 > > 
-> > surveys %\>%
-> > 
-> > filter(\!is.na(weight)) %\>%
-> > 
-> > group\_by(year) %\>%
-> > 
-> > filter(weight == max(weight)) %\>%
-> > 
-> > select(year, genus, species, weight) %\>%
-> > 
-> > arrange(year)
-> > 
+> > ```r
+> > surveys %>%
+> >   filter(!is.na(weight)) %>%
+> >   group_by(year) %>%
+> >   filter(weight == max(weight)) %>%
+> >   select(year, genus, species, weight) %>%
+> >   arrange(year)
+> > ```
 > > 
 > {: .solution}
 > 
@@ -776,11 +743,13 @@ Something went wrong lets use `summary` to inspect `date_vec`:
 ``` r
 summary(date_vec)
 ```
-
-    >         Min.      1st Qu.       Median         Mean      3rd Qu.         Max. 
-    > "1977-07-16" "1984-03-12" "1990-07-22" "1990-12-15" "1997-07-29" "2002-12-31" 
-    >         NA's 
-    >        "129"
+~~~
+     Min.      1st Qu.       Median         Mean      3rd Qu.         Max. 
+"1977-07-16" "1984-03-12" "1990-07-22" "1990-12-15" "1997-07-29" "2002-12-31" 
+         NA's 
+        "129"
+~~~
+{: .output}
 
 Some dates have missing values. Let’s investigate where they are coming
 from.
@@ -789,8 +758,10 @@ from.
 missing_dates_vec <- dates_char_vec[is.na(date_vec)]
 head(missing_dates_vec)
 ```
-
-    > [1] "2000-9-31" "2000-4-31" "2000-4-31" "2000-4-31" "2000-4-31" "2000-9-31"
+~~~
+[1] "2000-9-31" "2000-4-31" "2000-4-31" "2000-4-31" "2000-4-31" "2000-9-31"
+~~~
+{: .output}
 
 or
 
@@ -798,14 +769,16 @@ or
 missing_dates_tab <- surveys[is.na(date_vec), c("year", "month", "day")]
 head(missing_dates_tab)
 ```
-
-    >      year month day
-    > 3144 2000     9  31
-    > 3817 2000     4  31
-    > 3818 2000     4  31
-    > 3819 2000     4  31
-    > 3820 2000     4  31
-    > 3856 2000     9  31
+~~~
+      year month day
+ 3144 2000     9  31
+ 3817 2000     4  31
+ 3818 2000     4  31
+ 3819 2000     4  31
+ 3820 2000     4  31
+ 3856 2000     9  31
+ ~~~
+{: .output}
 
 Why did these dates fail to parse? If you had to use these data for your
 analyses, how would you deal with this situation?
@@ -827,22 +800,24 @@ new column called `date`:
 surveys$date <- date_vec
 str(surveys) # notice the new column, with 'date' as the class
 ```
-
-    > 'data.frame': 34786 obs. of  14 variables:
-    >  $ record_id      : int  1 72 224 266 349 363 435 506 588 661 ...
-    >  $ month          : int  7 8 9 10 11 11 12 1 2 3 ...
-    >  $ day            : int  16 19 13 16 12 12 10 8 18 11 ...
-    >  $ year           : int  1977 1977 1977 1977 1977 1977 1977 1978 1978 1978 ...
-    >  $ plot_id        : int  2 2 2 2 2 2 2 2 2 2 ...
-    >  $ species_id     : chr  "NL" "NL" "NL" "NL" ...
-    >  $ sex            : chr  "M" "M" "" "" ...
-    >  $ hindfoot_length: int  32 31 NA NA NA NA NA NA NA NA ...
-    >  $ weight         : int  NA NA NA NA NA NA NA NA 218 NA ...
-    >  $ genus          : chr  "Neotoma" "Neotoma" "Neotoma" "Neotoma" ...
-    >  $ species        : chr  "albigula" "albigula" "albigula" "albigula" ...
-    >  $ taxa           : chr  "Rodent" "Rodent" "Rodent" "Rodent" ...
-    >  $ plot_type      : chr  "Control" "Control" "Control" "Control" ...
-    >  $ date           : Date, format: "1977-07-16" "1977-08-19" ...
+~~~
+ 'data.frame': 34786 obs. of  14 variables:
+  $ record_id      : int  1 72 224 266 349 363 435 506 588 661 ...
+  $ month          : int  7 8 9 10 11 11 12 1 2 3 ...
+  $ day            : int  16 19 13 16 12 12 10 8 18 11 ...
+  $ year           : int  1977 1977 1977 1977 1977 1977 1977 1978 1978 1978 ...
+  $ plot_id        : int  2 2 2 2 2 2 2 2 2 2 ...
+  $ species_id     : chr  "NL" "NL" "NL" "NL" ...
+  $ sex            : chr  "M" "M" "" "" ...
+  $ hindfoot_length: int  32 31 NA NA NA NA NA NA NA NA ...
+  $ weight         : int  NA NA NA NA NA NA NA NA 218 NA ...
+  $ genus          : chr  "Neotoma" "Neotoma" "Neotoma" "Neotoma" ...
+  $ species        : chr  "albigula" "albigula" "albigula" "albigula" ...
+  $ taxa           : chr  "Rodent" "Rodent" "Rodent" "Rodent" ...
+  $ plot_type      : chr  "Control" "Control" "Control" "Control" ...
+  $ date           : Date, format: "1977-07-16" "1977-08-19" ...
+  ~~~
+{: .output}
 
 > ## Note
 >
@@ -855,7 +830,7 @@ str(surveys) # notice the new column, with 'date' as the class
 > unpick where errors have occured.
 {: .callout}
 
-## Reshaping with pivot\_wider and pivot\_longer
+## Reshaping with pivot_wider and pivot_longer
 
 In the [spreadsheet
 lesson](https://southampton-rsg.github.io/spreadsheets-data-organisation-and-management/01-format-data/index.html),
@@ -895,17 +870,17 @@ values of a variable.
 We can do both these of transformations with two `tidyr` functions,
 `pivot_longer()` and `pivot_wider()`.
 
-#### Pivot\_wider
+#### Pivot_wider
 
 `pivot_wider()` takes three principal arguments:
 
 1.  the data
-2.  *names\_from* indicates which column (or columns) to get the name of
+2.  *names_from* indicates which column (or columns) to get the name of
     the output column from
-3.  *values\_from* indicates which column (or columns) to get the cell
+3.  *values_from* indicates which column (or columns) to get the cell
     values from
 
-Further arguments include *values\_fill* which, if set, fills in missing
+Further arguments include *values_fill* which, if set, fills in missing
 values with the value provided.
 
 Let’s use `pivot_wider()` to transform surveys to find the mean weight
@@ -947,7 +922,7 @@ surveys_gw %>%
   head()
 ```
 
-#### Pivot\_longer
+#### Pivot_longer
 
 The opposing situation could occur if we had been provided with data in
 the form of `surveys_wide`, where the genus names are column names, but
@@ -963,13 +938,13 @@ associated with the column names.
 1.  the data
 2.  *cols* indicates the columns to pivot into longer format (or those
     not to pivot)
-3.  *names\_to* indicates the name of the column to create from the data
+3.  *names_to* indicates the name of the column to create from the data
     stored in the column names of data.
-4.  *values\_to* indicates the name of the column to create from the
+4.  *values_to* indicates the name of the column to create from the
     data stored in cell values.
 
-To recreate `surveys_gw` from `surveys_wide` we would set *names\_to*
-`genus` and *values\_to* `mean_weight` and use all columns except
+To recreate `surveys_gw` from `surveys_wide` we would set *names_to*
+`genus` and *values_to* `mean_weight` and use all columns except
 `plot_id` for the key variable. Here we exclude `plot_id` from being
 pivoted.
 
@@ -982,15 +957,15 @@ str(surveys_long)
 
 ![](fig/pivot_longer.png)
 
-Note that now the `NA` genera are included in the new pivot\_longer
-format. Using pivot\_wider and then pivot\_longer can be a useful way to
+Note that now the `NA` genera are included in the new pivot_longer
+format. Using pivot_wider and then pivot_longer can be a useful way to
 balance out a dataset so every replicate has the same composition.
 
 We could also have used a specification for what columns to include.
 This can be useful if you have a large number of identifying columns,
 and it’s easier to specify what to pivot than what to leave alone. And
 if the columns are directly adjacent, we don’t even need to list them
-all out - just use the `:` operator\!
+all out - just use the `:` operator!
 
 ``` r
 surveys_wide %>%
@@ -1009,16 +984,13 @@ surveys_wide %>%
 > 
 > > ## Solution
 > > 
-> > surveys\_wide\_genera \<- surveys %\>%
-> > 
-> > group\_by(plot\_id, year) %\>%
-> > 
-> > summarize(n\_genera = n\_distinct(genus))%\>%
-> > 
-> > pivot\_wider(names\_from = year, values\_from = n\_genera)
-> > 
-> > head(surveys\_wide\_genera)
-> > 
+> > ```r
+> > surveys_wide_genera <- surveys %>%
+> >   group_by(plot_id, year) %>%
+> >   summarize(n_genera = n_distinct(genus))%>%
+> >   pivot_wider(names_from = year, values_from = n_genera)
+> > head(surveys_wide_genera)
+> > ```
 > > 
 > {: .solution}
 > 
@@ -1028,11 +1000,10 @@ surveys_wide %>%
 > 
 > > ## Solution
 > > 
-> > surveys\_wide\_genera %\>%
-> > 
-> > pivot\_longer(cols = -plot\_id, names\_to = ‘year’, values\_to =
-> > ‘n\_genera’)
-> > 
+> > ```r
+> > surveys_wide_genera %>%
+> >   pivot_longer(cols = -plot_id, names_to = 'year', values_to ='n_genera')
+> > ```
 > > 
 > {: .solution}
 > 
@@ -1049,11 +1020,10 @@ surveys_wide %>%
 > 
 > > ## Solution
 > > 
-> > surveys\_long \<- surveys %\>%
-> > 
-> > pivot\_longer(cols = c(hindfoot\_length, weight), names\_to =
-> > “measurement”, values\_to = “value”)
-> > 
+> > ```r
+> > surveys_long <- surveys %>%
+> >   pivot_longer(cols = c(hindfoot_length, weight), names_to ='measurement', values_to = 'value')
+> > ```
 > > 
 > {: .solution}
 > 
@@ -1066,14 +1036,12 @@ surveys_wide %>%
 > 
 > > ## Solution
 > > 
-> > surveys\_long %\>%
-> > 
-> > group\_by(year, measurement, plot\_type) %\>%
-> > 
-> > summarize(mean\_value = mean(value, na.rm=TRUE)) %\>%
-> > 
-> > pivot\_wider(names\_from = measurement, values\_from = mean\_value)
-> > 
+> > ```r
+> > surveys_long %>%
+> >   group_by(year, measurement, plot_type) %>%
+> >   summarize(mean_value = mean(value, na.rm=TRUE)) %>%
+> >   pivot_wider(names_from = measurement, values_from = mean_value)
+> > ```
 > > 
 > {: .solution}
 > 
