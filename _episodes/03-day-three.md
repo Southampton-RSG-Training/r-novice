@@ -273,9 +273,7 @@ ggplot(data = surveys_complete, mapping = aes(x = weight, y = hindfoot_length)) 
 > > geom\_point(aes(color = plot\_type))
 > > 
 > > ![](fig/unnamed-chunk-4-1.png)<!-- --> 
-> 
-{: .solution}
-
+> {: .solution}
 >  
 {: .challenge}
 
@@ -554,9 +552,7 @@ package provides a wide variety of options.
 > > theme\_bw()
 > > 
 > > ![](fig/challange-theme-bw-1.png)<!-- --> 
-> 
-{: .solution}
-
+> {: .solution}
 > 
 > 
 > 

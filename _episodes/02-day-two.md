@@ -4,10 +4,6 @@ slug: r-novice-manipulating-data
 teaching: 150
 exorcises: 30
 objectives:
-- "Describe what a factor is."
-- "Convert between strings and factors."
-- "Reorder and rename factors."
-- "Change how character strings are handled in a data frame."
 - "Describe the purpose of the **`dplyr`** and **`tidyr`** packages."
 - "Select certain columns in a data frame with the **`dplyr`** function `select`."
 - "Select certain rows in a data frame according to filtering conditions with the **`dplyr`** function `filter`."
@@ -17,6 +13,7 @@ objectives:
 - "Use `summarize`, `group_by`, and `count` to split a data frame into groups of observations, apply summary statistics for each group, and then combine the results."
 - "Describe the concept of a wide and a long table format and for which purpose those formats are useful."
 - "Describe what key-value pairs are."
+- "Format dates."
 - "Reshape a data frame from long to wide format and back with the `spread` and `gather` commands from the **`tidyr`** package."
 - "Export a data frame to a .csv file."
 keypoints:
@@ -44,288 +41,11 @@ pivot_longer() from the tidyr package."
 
 # Manipulating Data
 
-Fist we need to reload the surveys data frame.
 
-``` r
-surveys <- read.csv("data_raw/portal_data_joined.csv")
-```
-
-## Factors
-
-When we did `str(surveys)` we saw that several of the columns consist of
-integers.
-
-The columns `genus`, `species`, `sex`,
-`plot_type`, … are strings. This is because for the function `read.csv`
-`stringsAsFactors = FALSE` is the default. If we set `stringsAsFactors = TRUE`
-then these columns will be factors.
-
-``` r
-surveys <- read.csv("data_raw/portal_data_joined.csv", stringsAsFactors = TRUE)
-```
-
-Factors are very useful and actually contribute to making R particularly
-well suited to working with data. So we are going to spend a little time
-introducing them.
-
-Factors represent categorical data. They are stored as integers
-associated with labels and they can be ordered or unordered. While
-factors look (and often behave) like character vectors, they are
-actually treated as integer vectors by R. So you need to be very careful
-when treating them as strings.
-
-Once created, factors can only contain a pre-defined set of values,
-known as *levels*. By default, R always sorts levels in alphabetical
-order. For instance, if you have a factor with 2 levels:
-
-``` r
-sex <- factor(c("male", "female", "female", "male"))
-```
-
-R will assign `1` to the level `"female"` and `2` to the level `"male"`
-(because `f` comes before `m`, even though the first element in this
-vector is `"male"`). You can see this by using the function `levels()`
-and you can find the number of levels using `nlevels()`:
-
-``` r
-levels(sex)
-nlevels(sex)
-```
-
-Sometimes, the order of the factors does not matter, other times you
-might want to specify the order because it is meaningful (e.g., “low”,
-“medium”, “high”), it improves your visualization, or it is required
-by a particular type of analysis. Here, one way to reorder our levels in
-the `sex` vector would be:
-
-``` r
-sex # current order
-```
-
-    > [1] male   female female male  
-    > Levels: female male
-
-``` r
-sex <- factor(sex, levels = c("male", "female"))
-sex # after re-ordering
-```
-
-    > [1] male   female female male  
-    > Levels: male female
-
-In R’s memory, these factors are represented by integers (1, 2, 3), but
-are more informative than integers because factors are self describing:
-`"female"`, `"male"` is more descriptive than `1`, `2`. Which one is
-“male”? You wouldn’t be able to tell just from the integer data.
-Factors, on the other hand, have this information built in. It is
-particularly helpful when there are many levels (like the species names
-in our example dataset).
-
-### Converting factors
-
-If you need to convert a factor to a character vector, you use
-`as.character(x)`.
-
-``` r
-as.character(sex)
-```
-
-In some cases, you may have to convert factors where the levels appear
-as numbers (such as concentration levels or years) to a numeric vector.
-For instance, in one part of your analysis the years might need to be
-encoded as factors (e.g., comparing average weights across years) but in
-another part of your analysis they may need to be stored as numeric
-values (e.g., doing math operations on the years). This conversion from
-factor to numeric is a little trickier. The `as.numeric()` function
-returns the index values of the factor, not its levels, so it will
-result in an entirely new (and unwanted in this case) set of numbers.
-One method to avoid this is to convert factors to characters, and then
-to numbers.
-
-Another method is to use the `levels()` function. Compare:
-
-``` r
-year_fct <- factor(c(1990, 1983, 1977, 1998, 1990))
-as.numeric(year_fct)               # Wrong! And there is no warning...
-as.numeric(as.character(year_fct)) # Works...
-as.numeric(levels(year_fct))[year_fct]    # The recommended way.
-```
-
-Notice that in the `levels()` approach, three important steps occur:
-
-  - We obtain all the factor levels using `levels(year_fct)`
-  - We convert these levels to numeric values using
-    `as.numeric(levels(year_fct))`
-  - We then access these numeric values using the underlying integers of
-    the vector `year_fct` inside the square brackets
-
-### Renaming factors
-
-When your data is stored as a factor, you can use the `plot()` function
-to get a quick glance at the number of observations represented by each
-factor level. Let’s look at the number of males and females captured
-over the course of the experiment:
-
-``` r
-## bar plot of the number of females and males captured during the experiment:
-plot(as.factor(surveys$sex))
-```
-
-![](fig/unnamed-chunk-9-1.png)<!-- -->
-
-In addition to males and females, there are about 1700 individuals for
-which the sex information hasn’t been recorded. Additionally, for these
-individuals, there is no label to indicate that the information is
-missing or undetermined. Let’s rename this label to something more
-meaningful. Before doing that, we’re going to pull out the data on sex
-and work with that data, so we’re not modifying the working copy of the
-data frame:
-
-``` r
-sex <- factor(surveys$sex)
-head(sex)
-```
-
-    > [1] M M        
-    > Levels:  F M
-
-``` r
-levels(sex)
-```
-
-    > [1] ""  "F" "M"
-
-``` r
-levels(sex)[1] <- "undetermined"
-levels(sex)
-```
-
-    > [1] "undetermined" "F"            "M"
-
-``` r
-head(sex)
-```
-
-    > [1] M            M            undetermined undetermined undetermined
-    > [6] undetermined
-    > Levels: undetermined F M
-
-> ## Challenge
-> 
->   - Rename “F” and “M” to “female” and “male” respectively.
->   - Now that we have renamed the factor level to “undetermined”, can
->     you recreate the barplot such that “undetermined” is last (after
->     “male”)?
-> 
-> > ## Solution
-> > 
-> > levels(sex)\[2:3\] \<- c(“female”, “male”)
-> > 
-> > sex \<- factor(sex, levels = c(“female”, “male”, “undetermined”))
-> > 
-> > plot(sex)
-> > 
-> > ![](fig/unnamed-chunk-11-1.png)<!-- --> 
-> 
-{: .solution}
-
-> 
-> 
-> 
-{: .challenge}
-
-
-> ## Stretch Challenge (Intermediate - 20 mins)
-> 
->   - Group data from the continuous variable `hindfoot_length` into
->     chunks of 10 units and convert this variable into a factor.
->     i.e. you should have factor levels ‘0-10’, ‘11-20’, ‘21-30’,
->     ‘31-40’, ‘41-50’, ‘51-60’, and ‘60+’.
-> 
->   - Create a barplot of `hindfoot_length`
-> 
-> > ## Solution
-> > 
-> > surveys\[,‘hindfoot\_length’\]\[surveys\[,‘hindfoot\_length’\] \<=
-> > 10\] \<- “0-10”
-> > 
-> > surveys\[,‘hindfoot\_length’\]\[surveys\[,‘hindfoot\_length’\] \> 10
-> > & surveys\[,‘hindfoot\_length’\] \<= 20\] \<- “11-20”
-> > 
-> > surveys\[,‘hindfoot\_length’\]\[surveys\[,‘hindfoot\_length’\] \> 20
-> > & surveys\[,‘hindfoot\_length’\] \<= 30\] \<- “21-30”
-> > 
-> > surveys\[,‘hindfoot\_length’\]\[surveys\[,‘hindfoot\_length’\] \> 30
-> > & surveys\[,‘hindfoot\_length’\] \<= 40\] \<- “31-40”
-> > 
-> > surveys\[,‘hindfoot\_length’\]\[surveys\[,‘hindfoot\_length’\] \> 40
-> > & surveys\[,‘hindfoot\_length’\] \<= 50\] \<- “41-50”
-> > 
-> > surveys\[,‘hindfoot\_length’\]\[surveys\[,‘hindfoot\_length’\] \> 50
-> > & surveys\[,‘hindfoot\_length’\] \<= 60\] \<- “51-60”
-> > 
-> > surveys\[,‘hindfoot\_length’\]\[surveys\[,‘hindfoot\_length’\] \>
-> > 60\] \<- “61+”
-> > 
-> > surveys\[,‘hindfoot\_length’\] \<-
-> > as.factor(surveys\[,‘hindfoot\_length’\])
-> > 
-> > plot(surveys\[,‘hindfoot\_length’\])
-> > 
-> > ![](fig/unnamed-chunk-12-1.png)<!-- --> 
-> 
-{: .solution}
-
-> 
-> 
-> 
-{: .challenge}
-
-
-### Using `stringsAsFactors=FALSE`
-
-In R versions previous to 4.0, when building or importing a data frame,
-the columns that contain characters (i.e. text) are coerced (=
-converted) into factors by default. However, since version 4.0 columns
-that contain characters (i.e. text) are NOT coerced (= converted) into
-factors.
-
-Depending on what you want to do with the data, you may want to keep
-these columns as `character` or you may want them to be `factor`.
-
-`read.csv()` and `read.table()` have an argument called
-`stringsAsFactors` which can be set to `FALSE` for character or `TRUE`
-for factor.
-
-In most cases, it is preferable to keep `stringsAsFactors = FALSE` when
-importing data and to convert as a factor only the columns that require
-this data type.
-
-``` r
-## Compare the difference between our data read as `factor` vs `character`.
-surveys <- read.csv("data_raw/portal_data_joined.csv", stringsAsFactors = TRUE)
-str(surveys)
-surveys <- read.csv("data_raw/portal_data_joined.csv", stringsAsFactors = FALSE)
-str(surveys)
-## Convert the column "plot_type" into a factor
-surveys$plot_type <- factor(surveys$plot_type)
-```
-
-The automatic conversion of data type is sometimes a blessing, sometimes
-an annoyance. Be aware that it exists, learn the rules, and double check
-that data you import in R are of the correct type within your data
-frame.
 
 -----
 
 > ## Learning Objectives
-> 
-> #### Factors
-> 
->   - ~~Describe what a factor is.~~
->   - ~~Convert between strings and factors.~~
->   - ~~Reorder and rename factors.~~
->   - ~~Change how character strings are handled in a data frame.~~
 > 
 > #### Tidyverse
 > 
@@ -345,6 +65,7 @@ frame.
 >   - Describe the concept of a wide and a long table format and for
 >     which purpose those formats are useful.
 >   - Describe what key-value pairs are.
+>   - Format dates.
 >   - Reshape a data frame from long to wide format and back with the
 >     `spread` and `gather` commands from the **`tidyr`** package.
 >   - Export a data frame to a .csv file.
@@ -617,9 +338,7 @@ Note that the final data frame is the leftmost part of this expression.
 > > select(year, sex, weight)
 > > 
 > > 
-> 
-{: .solution}
-
+> {: .solution}
 > 
 > 
 > 
@@ -648,9 +367,7 @@ Note that the final data frame is the leftmost part of this expression.
 > > select(record\_id, month, year, sex, weight)
 > > 
 > > 
-> 
-{: .solution}
-
+> {: .solution}
 > 
 > 
 > 
@@ -728,9 +445,7 @@ weight *is not* an `NA`.
 > > select(species\_id, hindfoot\_cm)
 > > 
 > > 
-> 
-{: .solution}
-
+> {: .solution}
 > 
 > 
 > 
@@ -753,9 +468,7 @@ weight *is not* an `NA`.
 > > ifelse(weight \<= mean(weight, na.rm = TRUE), 1, 2))
 > > 
 > > 
-> 
-{: .solution}
-
+> {: .solution}
 > 
 > 
 >   - What’s the name of the function in `dplyr` which both selects and
@@ -765,9 +478,7 @@ weight *is not* an `NA`.
 > > ## Solution
 > > 
 > > transmute 
-> 
-{: .solution}
-
+> {: .solution}
 > 
 > 
 > 
@@ -944,9 +655,7 @@ sex (i.e. `NA`).
 > > count(plot\_type)
 > > 
 > > 
-> 
-{: .solution}
-
+> {: .solution}
 > 
 > 
 > - Use `group_by()` and `summarize()` to find the mean, min, and max
@@ -972,9 +681,7 @@ sex (i.e. `NA`).
 > > n = n() )
 > > 
 > > 
-> 
-{: .solution}
-
+> {: .solution}
 > 
 > 
 > - What was the heaviest animal measured in each year? Return the
@@ -995,14 +702,158 @@ sex (i.e. `NA`).
 > > arrange(year)
 > > 
 > > 
-> 
-{: .solution}
-
+> {: .solution}
 > 
 > 
 > 
 {: .challenge}
 
+## Formatting Dates
+
+One of the most common issues that new (and experienced\!) R users have
+is converting date and time information into a variable that is
+appropriate and usable during analyses. As a reminder from earlier in
+this lesson, the best practice for dealing with date data is to ensure
+that each component of your date is stored as a separate variable. Using
+`str()`, We can confirm that our data frame has a separate column for
+day, month, and year, and that each contains integer values.
+
+``` r
+str(surveys)
+```
+
+We are going to use the `ymd()` function from the package
+**`lubridate`** (which belongs to the **`tidyverse`**; learn more
+[here](https://www.tidyverse.org/)). When you load the **`tidyverse`**
+(`library("tidyverse")`), the core packages get loaded. **`lubridate`**
+however does not belong to the core tidyverse, so you have to load it
+explicitly with `library(lubridate)`
+
+Start by loading the required package:
+
+``` r
+library("lubridate")
+```
+
+`ymd()` takes a vector representing year, month, and day, and converts
+it to a `Date` vector. `Date` is a class of data recognized by R as
+being a date and can be manipulated as such. The argument that the
+function requires is a character vector formatted as “YYYY-MM-DD”.
+
+Let’s create a date object and inspect the structure:
+
+``` r
+my_date <- ymd("2015-01-01")
+str(my_date)
+```
+
+Now let’s paste the year, month, and day separately - we get the same
+result:
+
+``` r
+# sep indicates the character to use to separate each component
+my_date <- ymd(paste("2015", "1", "1", sep = "-"))
+str(my_date)
+```
+
+We can apply this operation to each row of the surveys dataset. We
+extract the vectors `surveys$year`, `surveys$month`, and `surveys$day`.
+Using `paste()` we can combine these vectors into a new vector for
+character dates.
+
+``` r
+dates_char_vec <- paste(surveys$year, surveys$month, surveys$day, sep = "-")
+```
+
+This character vector can be used as the argument for `ymd()`:
+
+``` r
+date_vec <- ymd(dates_char_vec)
+```
+
+Something went wrong lets use `summary` to inspect `date_vec`:
+
+``` r
+summary(date_vec)
+```
+
+    >         Min.      1st Qu.       Median         Mean      3rd Qu.         Max. 
+    > "1977-07-16" "1984-03-12" "1990-07-22" "1990-12-15" "1997-07-29" "2002-12-31" 
+    >         NA's 
+    >        "129"
+
+Some dates have missing values. Let’s investigate where they are coming
+from.
+
+``` r
+missing_dates_vec <- dates_char_vec[is.na(date_vec)]
+head(missing_dates_vec)
+```
+
+    > [1] "2000-9-31" "2000-4-31" "2000-4-31" "2000-4-31" "2000-4-31" "2000-9-31"
+
+or
+
+``` r
+missing_dates_tab <- surveys[is.na(date_vec), c("year", "month", "day")]
+head(missing_dates_tab)
+```
+
+    >      year month day
+    > 3144 2000     9  31
+    > 3817 2000     4  31
+    > 3818 2000     4  31
+    > 3819 2000     4  31
+    > 3820 2000     4  31
+    > 3856 2000     9  31
+
+Why did these dates fail to parse? If you had to use these data for your
+analyses, how would you deal with this situation?
+
+> ## Note
+> If the data is to be discarded we can use the `not` logical operator
+> `!` to make a filter for the bad dates.
+> 
+>     date_vec_cleaned <- date_vec[!is.na(date_vec)]
+> 
+> However for now we will include the bad dates and can us this simple
+> filter later if needed.
+{: .callout}
+
+The resulting `Date` vector `date_vec` can be added to `surveys` as a
+new column called `date`:
+
+``` r
+surveys$date <- date_vec
+str(surveys) # notice the new column, with 'date' as the class
+```
+
+    > 'data.frame': 34786 obs. of  14 variables:
+    >  $ record_id      : int  1 72 224 266 349 363 435 506 588 661 ...
+    >  $ month          : int  7 8 9 10 11 11 12 1 2 3 ...
+    >  $ day            : int  16 19 13 16 12 12 10 8 18 11 ...
+    >  $ year           : int  1977 1977 1977 1977 1977 1977 1977 1978 1978 1978 ...
+    >  $ plot_id        : int  2 2 2 2 2 2 2 2 2 2 ...
+    >  $ species_id     : chr  "NL" "NL" "NL" "NL" ...
+    >  $ sex            : chr  "M" "M" "" "" ...
+    >  $ hindfoot_length: int  32 31 NA NA NA NA NA NA NA NA ...
+    >  $ weight         : int  NA NA NA NA NA NA NA NA 218 NA ...
+    >  $ genus          : chr  "Neotoma" "Neotoma" "Neotoma" "Neotoma" ...
+    >  $ species        : chr  "albigula" "albigula" "albigula" "albigula" ...
+    >  $ taxa           : chr  "Rodent" "Rodent" "Rodent" "Rodent" ...
+    >  $ plot_type      : chr  "Control" "Control" "Control" "Control" ...
+    >  $ date           : Date, format: "1977-07-16" "1977-08-19" ...
+
+> ## Note
+>
+> For completeness sake it is worth noting that the above could be
+> achieved in one line. `surveys$date <- ymd(paste(surveys$year,
+> surveys$month, surveys$day, sep = "-"))` However, we would again see
+> the warning and could inspect it like so: `summary(surveys$date)`
+> `head(surveys[is.na(surveys$date), , c("year", "month", "day")])` This
+> way the r environment is kept cleaner however it is more difficult to
+> unpick where errors have occured.
+{: .callout}
 
 ### Reshaping with pivot\_wider and pivot\_longer
 
@@ -1169,9 +1020,7 @@ surveys_wide %>%
 > > head(surveys\_wide\_genera)
 > > 
 > > 
-> 
-{: .solution}
-
+> {: .solution}
 > 
 > 
 > - Now take that data frame and `pivot_longer()` it again, so each
@@ -1185,9 +1034,7 @@ surveys_wide %>%
 > > ‘n\_genera’)
 > > 
 > > 
-> 
-{: .solution}
-
+> {: .solution}
 > 
 > 
 > - The `surveys` data set has two measurement columns:
@@ -1208,9 +1055,7 @@ surveys_wide %>%
 > > “measurement”, values\_to = “value”)
 > > 
 > > 
-> 
-{: .solution}
-
+> {: .solution}
 > 
 > 
 > - With this new data set, calculate the average of each
@@ -1230,9 +1075,7 @@ surveys_wide %>%
 > > pivot\_wider(names\_from = measurement, values\_from = mean\_value)
 > > 
 > > 
-> 
-{: .solution}
-
+> {: .solution}
 > 
 > 
 > 
