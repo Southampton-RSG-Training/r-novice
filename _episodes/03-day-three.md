@@ -266,11 +266,10 @@ ggplot(data = surveys_complete, mapping = aes(x = weight, y = hindfoot_length)) 
 > 
 > > ## Solution
 > > 
-> > ggplot(data = surveys\_complete,
-> > 
-> > mapping = aes(x = species\_id, y = weight)) +
-> > 
-> > geom\_point(aes(color = plot\_type))
+> > ```r
+> > ggplot(data = surveys_complete, mapping = aes(x = species_id, y = weight)) +
+> >   geom_point(aes(color = plot_type))
+> > ```
 > > 
 > > ![](fig/unnamed-chunk-4-1.png)<!-- --> 
 > {: .solution}
@@ -536,21 +535,17 @@ package provides a wide variety of options.
 > 
 > > ## Solution
 > > 
-> > yearly\_weight \<- surveys\_complete %\>%
+> > ```r
+> > yearly_weight <- surveys_complete %>%
+> >   group_by(year, species_id) %>%
+> >   summarize(avg_weight = mean(weight))
 > > 
-> > group\_by(year, species\_id) %\>%
-> > 
-> > summarize(avg\_weight = mean(weight))
-> > 
-> > ggplot(data = yearly\_weight, mapping = aes(x=year, y=avg\_weight))
-> > +
-> > 
-> > geom\_line() +
-> > 
-> > facet\_wrap(vars(species\_id)) +
-> > 
-> > theme\_bw()
-> > 
+> > ggplot(data = yearly_weight, mapping = aes(x=year, y=avg_weight))+
+> >   geom_line() +
+> >   facet_wrap(vars(species_id)) +
+> >   theme_bw()
+> > ```
+> >
 > > ![](fig/challange-theme-bw-1.png)<!-- --> 
 > {: .solution}
 > 
