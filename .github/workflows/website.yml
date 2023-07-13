@@ -47,9 +47,9 @@ jobs:
       - name: Install sys deps
         run: sudo apt-get install -y libcurl4-openssl-dev
 
-      - name: Setup Renv
-        if: steps.check_files.outputs.files_exists == 'true'
-        uses: r-lib/actions/setup-renv@v2
+      # - name: Setup Renv
+      #   if: steps.check_files.outputs.files_exists == 'true'
+      #   uses: r-lib/actions/setup-renv@v2
 
       # This task:
       # 1: Finds the file paths for all RMarkdown scripts
@@ -59,15 +59,15 @@ jobs:
       # 4: Use a perl regex to find specific challenge tags
       # 5: Add the episodes in the markdown folder
       # 6: Commit the changes to be added to the GH pages episode later
-      - name: Render R markdown
-        if: steps.check_files.outputs.files_exists == 'true'
-        run: |
-          RMD_PATH=$(find ./_episodes_rmd -name '*.Rmd')
-          Rscript -e 'for (f in commandArgs(TRUE)) if (file.exists(f)) rmarkdown::render(f, knit_root_dir=getwd(), output_dir=dirname(sub("./_episodes_rmd/", "./_episodes/", f)))' ${RMD_PATH[*]}
-          perl -pi -e "s/([>\s]*)(>\s)(.*?)(\{: \.[a-zA-Z]+\})/\1\2\3\n\1\4\n\1/g" ./_episodes/*.md
-          perl -0777pi -e "s/(?<!\n){: .challenge}/\n{: .challenge}/g" ./_episodes/*.md
-          git add ./_episodes/*.md
-          git commit ./_episodes/*.md -m 'Re-build Rmarkdown files' || echo "No changes to commit"
+      # - name: Render R markdown
+      #   if: steps.check_files.outputs.files_exists == 'true'
+      #   run: |
+      #     RMD_PATH=$(find ./_episodes_rmd -name '*.Rmd')
+      #     Rscript -e 'for (f in commandArgs(TRUE)) if (file.exists(f)) rmarkdown::render(f, knit_root_dir=getwd(), output_dir=dirname(sub("./_episodes_rmd/", "./_episodes/", f)))' ${RMD_PATH[*]}
+      #     perl -pi -e "s/([>\s]*)(>\s)(.*?)(\{: \.[a-zA-Z]+\})/\1\2\3\n\1\4\n\1/g" ./_episodes/*.md
+      #     perl -0777pi -e "s/(?<!\n){: .challenge}/\n{: .challenge}/g" ./_episodes/*.md
+      #     git add ./_episodes/*.md
+      #     git commit ./_episodes/*.md -m 'Re-build Rmarkdown files' || echo "No changes to commit"
 
       - name: Run python build scripts
         run: |
