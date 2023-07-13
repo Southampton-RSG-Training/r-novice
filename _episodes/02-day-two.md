@@ -855,7 +855,7 @@ str(surveys) # notice the new column, with 'date' as the class
 > unpick where errors have occured.
 {: .callout}
 
-### Reshaping with pivot\_wider and pivot\_longer
+## Reshaping with pivot\_wider and pivot\_longer
 
 In the [spreadsheet
 lesson](https://southampton-rsg.github.io/spreadsheets-data-organisation-and-management/01-format-data/index.html),
