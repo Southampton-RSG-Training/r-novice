@@ -455,10 +455,13 @@ You can get output from R simply by typing math in the console:
 > 
 > > ## Solution
 > > 
+> > ```r
 > > 8 %% 3
-> > 
-> > > \[1\] 2
-> > 
+> > ```
+> > ~~~
+> > \[1\] 2
+> > ~~~
+> > {: .output}
 > > 
 > {: .solution}
 > 
