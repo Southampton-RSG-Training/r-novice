@@ -647,8 +647,7 @@ ggplot(surveys_complete, aes(x = species_id, y = hindfoot_length)) +
 > 
 > Here are some ideas:
 >
->   - Try using a different color palette using [RColorBrewer]
->     (https://www.datanovia.com/en/blog/the-a-z-of-rcolorbrewer-palette/).
+>   - Try using a different color palette using [RColorBrewer](https://www.datanovia.com/en/blog/the-a-z-of-rcolorbrewer-palette/).
 >   - See if you can change the thickness of the lines.
 >   - Can you find a way to change the name of the legend? What about
 >     its labels? 
