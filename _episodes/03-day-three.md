@@ -37,17 +37,17 @@ dir.create(file.path("data_raw"), showWarnings = FALSE)
 dir.create(file.path("data"), showWarnings = FALSE)
 download.file(url = "https://ndownloader.figshare.com/files/2292169", destfile = "data_raw/portal_data_joined.csv")
 surveys <- read_csv("data_raw/portal_data_joined.csv")
-surveys <- surveys %>%
-  filter(!is.na(weight)) %>%
+surveys <- surveys |>
+  filter(!is.na(weight)) |>
   mutate(weight_kg = weight / 1000)
-surveys_complete <- surveys %>%
+surveys_complete <- surveys |>
   filter(!is.na(weight),
          !is.na(hindfoot_length),
          !is.na(sex))
-species_counts <- surveys_complete %>%
-  count(species_id) %>%
+species_counts <- surveys_complete |>
+  count(species_id) |>
   filter(n >= 50)
-surveys_complete <- surveys_complete %>%
+surveys_complete <- surveys_complete |>
   filter(species_id %in% species_counts$species_id)
 write_csv(surveys_complete, "data/surveys_complete.csv")
 ```
@@ -357,7 +357,7 @@ Let’s calculate number of counts per year for each genus. First we need
 to group the data and count records within each group:
 
 ``` r
-yearly_counts <- surveys_complete %>%
+yearly_counts <- surveys_complete |>
   count(year, genus)
 ```
 
@@ -394,14 +394,14 @@ ggplot(data = yearly_counts, aes(x = year, y = n, color = genus)) +
 
 ## Integrating the pipe operator with ggplot2
 
-In the previous lesson, we saw how to use the pipe operator `%>%` to use
+In the previous lesson, we saw how to use the pipe operator `|>` to use
 different functions in a sequence and create a coherent workflow. We can
 also use the pipe operator to pass the `data` argument to the `ggplot()`
 function. The hard part is to remember that to build your ggplot, you
-need to use `+` and not `%>%`.
+need to use `+` and not `|>`.
 
 ``` r
-yearly_counts %>%
+yearly_counts |>
     ggplot(mapping = aes(x = year, y = n, color = genus)) +
     geom_line()
 ```
@@ -412,8 +412,8 @@ The pipe operator can also be used to link data manipulation with
 consequent data visualization.
 
 ``` r
-yearly_counts_graph <- surveys_complete %>%
-    count(year, genus) %>%
+yearly_counts_graph <- surveys_complete |>
+    count(year, genus) |>
     ggplot(mapping = aes(x = year, y = n, color = genus)) +
     geom_line()
 
@@ -443,7 +443,7 @@ individual measured. To do that we need to make counts in the data frame
 grouped by `year`, `genus`, and `sex`:
 
 ``` r
- yearly_sex_counts <- surveys_complete %>%
+ yearly_sex_counts <- surveys_complete |>
                         count(year, genus, sex)
 ```
 
@@ -537,8 +537,8 @@ package provides a wide variety of options.
 > > ## Solution
 > > 
 > > ```r
-> > yearly_weight <- surveys_complete %>%
-> >   group_by(year, species_id) %>%
+> > yearly_weight <- surveys_complete |>
+> >   group_by(year, species_id) |>
 > >   summarize(avg_weight = mean(weight))
 > > 
 > > ggplot(data = yearly_weight, mapping = aes(x=year, y=avg_weight))+
