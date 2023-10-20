@@ -159,6 +159,8 @@ surveys_plot +
     line containing a layer. If, instead, the `+` sign is added in the
     line before the other layer, **`ggplot2`** will not add the new
     layer and will return an error message.
+  - Including `data = ` and `mapping = ` is optional, we include it here 
+    for clarity but it is often omitted.
 
 <!-- end list -->
 
@@ -442,8 +444,7 @@ grouped by `year`, `genus`, and `sex`:
 
 ``` r
  yearly_sex_counts <- surveys_complete %>%
-                      group_by(year, genus, sex) %>%
-                      tally()
+                        count(year, genus, sex)
 ```
 
 We can now make the faceted plot by splitting further by sex using
