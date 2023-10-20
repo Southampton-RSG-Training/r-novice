@@ -973,38 +973,6 @@ surveys_wide %>%
 
 > ## Challenge
 > 
-> - Use `pivot_wider()` on the `surveys` data frame with `year` as
->     columns, `plot_id` as rows, and the number of genera per plot as
->     the values. You will need to summarize before reshaping, and use
->     the function `n_distinct()` to get the number of unique genera
->     within a particular chunk of data. It’s a powerful function\! See
->     `?n_distinct` for more.
-> 
-> > ## Solution
-> > 
-> > ```r
-> > surveys_wide_genera <- surveys %>%
-> >   group_by(plot_id, year) %>%
-> >   summarize(n_genera = n_distinct(genus))%>%
-> >   pivot_wider(names_from = year, values_from = n_genera)
-> > head(surveys_wide_genera)
-> > ```
-> > 
-> {: .solution}
-> 
-> 
-> - Now take that data frame and `pivot_longer()` it again, so each
->     row is a unique `plot_id` by `year` combination.
-> 
-> > ## Solution
-> > 
-> > ```r
-> > surveys_wide_genera %>%
-> >   pivot_longer(cols = -plot_id, names_to = 'year', values_to ='n_genera')
-> > ```
-> > 
-> {: .solution}
-> 
 > 
 > - The `surveys` data set has two measurement columns:
 >     `hindfoot_length` and `weight`. This makes it difficult to do
