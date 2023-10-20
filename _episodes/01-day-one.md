@@ -45,7 +45,9 @@ na.rm = TRUE to calculate the result while ignoring the missing values.
 for statistics and plotting."
 - "It is possible to subset dataframes by specifying the coordinates in square
 brackets. Row numbers come first, followed by column numbers."
-- "Dates can be formatted using the package ‘lubridate’."
+- "Factors represent categorical data. They are stored as integers associated
+with labels and they can be ordered or unordered. Factors can only
+contain a pre-defined set of values, known as levels."
 ---
 
 # Working Environment

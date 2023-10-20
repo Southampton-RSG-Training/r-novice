@@ -17,9 +17,6 @@ objectives:
 - "Reshape a data frame from long to wide format and back with the `pivot_wider` and `pivot_longer` commands from the **`tidyr`** package."
 - "Export a data frame to a .csv file."
 keypoints:
-- "Factors represent categorical data. They are stored as integers associated
-with labels and they can be ordered or unordered. Factors can only
-contain a pre-defined set of values, known as levels."
 - "dplyr is a package for making tabular data manipulation easier and tidyr
 reshapes data so that it is in a convenient format for plotting or analysis.
 They are both part of the tidyverse package."
@@ -34,6 +31,7 @@ mutate()."
 paradigm: split the data into groups, apply some analysis to each group,
 and then combine the results.  This can be achieved using the group_by()
 and summarize() functions."
+- "Dates can be formatted using the package ‘lubridate’."
 - "To reshape data between wide and long formats, use pivot_wider() and
 pivot_longer() from the tidyr package."
 - "Export data from a dataframe to a csv file using write_csv()."
